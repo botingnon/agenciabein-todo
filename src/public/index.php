@@ -27,7 +27,7 @@ require '../lib/rb.php';
     getenv('MYSQL_PASS')
 );
 
-$r = new Restler(true);
+$r = new Restler();
 $r->addAPIClass('Todo\Api\Task');
 $r->addAPIClass('Resources');
 $r->handle();
