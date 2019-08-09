@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  api:
+    container_name: agenciabein-todo
+    build:
+      dockerfile: ./docker/php.dockerfile
+      context: .
+    restart: always
+    ports:
+      - 3000:80
+    volumes: 
+      - ./src:/var/www/html
+    depends_on:
+      - mariadb
+
+  mariadb:
+    image: mariadb
+    restart: always
+    volumes:
+        - ./docker/mariadb/lib:/var/lib/mysql
+        - ./docker/mariadb/custom:/etc/mysql/conf.d
+        - ./docker/mariadb/create:/docker-entrypoint-initdb.d
+    environment:
+        MYSQL_ROOT_PASSWORD: agenciabein
