@@ -28,6 +28,8 @@ require '../lib/rb.php';
 );
 
 $r = new Restler();
+$r->addAPIClass('Todo\Api\Auth');
 $r->addAPIClass('Todo\Api\Task');
 $r->addAPIClass('Resources');
+$r->addAuthenticationClass('Todo\Api\AccessControl');
 $r->handle();

@@ -12,3 +12,11 @@ CREATE TABLE `todo`.`task` (
   `completed` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
 );
+
+CREATE TABLE `todo`.`user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+);

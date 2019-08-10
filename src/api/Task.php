@@ -12,6 +12,10 @@ namespace Todo\Api;
 
 use \Luracast\Restler\RestException;
 
+/**
+ * @access protected
+ * @class  AccessControl
+ */
 class Task
 {
 
@@ -24,6 +28,7 @@ class Task
      *                    Opcionalmente exibe tarefas concluídas
      *
      * @return array Lista de tarefas
+     *
      */
     public function index($show_all = false)
     {
@@ -47,6 +52,7 @@ class Task
      *                            Título da tarefa
      *
      * @return array Tarefa cadastrada
+     *
      */
     public function post($title)
     {
@@ -67,6 +73,7 @@ class Task
      * @param int $id Identificador da tarefa
      *
      * @return array Tarefa cadastrada
+     *
      */
     public function put($id, $request_data = null)
     {
