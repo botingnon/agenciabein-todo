@@ -11,6 +11,7 @@
 namespace Todo\Api;
 
 use \Luracast\Restler\RestException;
+use \Luracast\Restler\Defaults;
 
 /**
  * @access protected
@@ -33,10 +34,14 @@ class Task
     public function index($show_all = false)
     {
         try {
-            $query = $show_all ? '' : 'completed = 0';
+            $userClass = Defaults::$userIdentifierClass;
+            $user = $userClass::getCacheIdentifier();
+
+            $query = 'user_id = ?';
+            $query .= $show_all ? '' : ' AND completed = 0';
 
             return \R::exportAll(
-                \R::findAll('task', $query)
+                \R::findAll('task', $query, [$user->id])
             );
         } catch (\Exception $e) {
             return $e->getMessage();
@@ -56,9 +61,13 @@ class Task
      */
     public function post($title)
     {
+        $userClass = Defaults::$userIdentifierClass;
+        $user = $userClass::getCacheIdentifier();
+
         $Task = \R::dispense('task');
         $Task->title = $title;
         $Task->completed = 0;
+        $Task->user_id = $user->id;
 
         $id = \R::store($Task);
 
@@ -81,6 +90,14 @@ class Task
         if (!$Task->id) {
             throw new RestException(404, '`id` not found.');
         }
+
+        $userClass = Defaults::$userIdentifierClass;
+        $user = $userClass::getCacheIdentifier();
+
+        if ($Task->user_id !== $user->id) {
+            throw new RestException(401, 'Access denied.');
+        }
+
         $Task->completed = 1;
 
         \R::store($Task);
@@ -100,6 +117,18 @@ class Task
     public function delete($id)
     {
         $Task = \R::load('task', $id);
+
+        if (!$Task->id) {
+            throw new RestException(404, '`id` not found.');
+        }
+
+        $userClass = Defaults::$userIdentifierClass;
+        $user = $userClass::getCacheIdentifier();
+
+        if ($Task->user_id !== $user->id) {
+            throw new RestException(401, 'Access denied.');
+        }
+
         \R::trash($Task);
 
         return [];

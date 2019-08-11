@@ -15,6 +15,7 @@ use Luracast\Restler\Resources;
 
 Resources::$useFormatAsExtension = false;
 
+\Luracast\Restler\Defaults::$crossOriginResourceSharing = true;
 \Luracast\Restler\Defaults::setProperty('cacheDirectory', dirname(__FILE__) . '/../cache');
 
 $dotenv = Dotenv\Dotenv::create(__DIR__ . '/../');
