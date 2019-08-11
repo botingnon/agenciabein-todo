@@ -35,13 +35,14 @@ class Task
     {
         try {
             $userClass = Defaults::$userIdentifierClass;
-            $user = $userClass::getCacheIdentifier();
+            $user_id = $userClass::getCacheIdentifier();
 
             $query = 'user_id = ?';
-            $query .= $show_all ? '' : ' AND completed = 0';
+            $query .= $show_all === true ? '' : ' AND completed = 0';
+            $query .= ' ORDER BY `id` DESC';
 
             return \R::exportAll(
-                \R::findAll('task', $query, [$user->id])
+                \R::findAll('task', $query, [$user_id])
             );
         } catch (\Exception $e) {
             return $e->getMessage();
@@ -62,12 +63,12 @@ class Task
     public function post($title)
     {
         $userClass = Defaults::$userIdentifierClass;
-        $user = $userClass::getCacheIdentifier();
+        $user_id = $userClass::getCacheIdentifier();
 
         $Task = \R::dispense('task');
         $Task->title = $title;
         $Task->completed = 0;
-        $Task->user_id = $user->id;
+        $Task->user_id = $user_id;
 
         $id = \R::store($Task);
 
@@ -92,9 +93,9 @@ class Task
         }
 
         $userClass = Defaults::$userIdentifierClass;
-        $user = $userClass::getCacheIdentifier();
+        $user_id = $userClass::getCacheIdentifier();
 
-        if ($Task->user_id !== $user->id) {
+        if ($Task->user_id !== $user_id) {
             throw new RestException(401, 'Access denied.');
         }
 
@@ -123,9 +124,9 @@ class Task
         }
 
         $userClass = Defaults::$userIdentifierClass;
-        $user = $userClass::getCacheIdentifier();
+        $user_id = $userClass::getCacheIdentifier();
 
-        if ($Task->user_id !== $user->id) {
+        if ($Task->user_id !== $user_id) {
             throw new RestException(401, 'Access denied.');
         }
 

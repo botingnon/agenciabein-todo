@@ -36,7 +36,7 @@ class AccessControl implements iAuthenticate
 
             $token = JWT::decode($token, $key, ['HS256']);
             
-            $userClass::setCacheIdentifier($token->user);
+            $userClass::setCacheIdentifier($token->user->id);
 
             $token->exp = time() + getenv('AUTH_EXPIRE_TIME');
 
