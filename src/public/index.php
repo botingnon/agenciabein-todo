@@ -3,7 +3,7 @@
  * Bootstrap Restler
  *
  * @category Api
- * @package  Bossabox
+ * @package  Todo
  * @author   Valdir Botingnon <valdir.botingnon@gmail.com>
  * @license  http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link     http://localhost:3000/doc
